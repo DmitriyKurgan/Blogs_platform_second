@@ -11,9 +11,21 @@ export const validateRequest = [
         .withMessage('Invalid websiteUrl pattern'),
 
     (req: Request, res: Response, next: NextFunction) => {
-        // if (!req.user || !req.user.id) {
-        //     return res.status(401).json({ message: 'Unauthorized' });
-        // }
+        debugger
+        // Проверка заголовка Authorization
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            return res.status(401).json({ message: 'Unauthorized: Missing Authorization header' });
+        }
+
+        const authData = Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
+        const username = authData[0];
+        const password = authData[1];
+
+        if (username !== 'admin' || password !== 'qwerty') {
+            return res.status(401).json({ message: 'Unauthorized: Invalid credentials' });
+        }
+
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             const errorMessages = errors.array().map((error: any) => ({
