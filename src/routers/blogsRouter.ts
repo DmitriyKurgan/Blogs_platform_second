@@ -17,6 +17,7 @@ blogsRouter.get('/:id', (req:Request, res: Response) => {
 
     if (!blogID || !blogByID){
         res.sendStatus(CodeResponsesEnum.Not_found_404);
+        return
     }
 
     res.status(CodeResponsesEnum.OK_200).send(blogByID);
