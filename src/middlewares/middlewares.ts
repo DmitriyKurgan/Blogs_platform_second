@@ -4,10 +4,12 @@ import { body, validationResult } from 'express-validator';
 export const validateRequest = [
     body('name').isString().isLength({max:15}).withMessage('Invalid name value'),
     body('description').isString().isLength({max:500}).withMessage('Invalid description value'),
-    body('websiteUrl').isString().isLength({max:100})
-        .withMessage('Invalid websiteUrl value')
+    body('websiteUrl')
+        .isString().withMessage('Invalid websiteUrl value')
+        .isLength({max:100}).withMessage('Invalid websiteUrl length')
         .matches(/^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/)
         .withMessage('Invalid websiteUrl pattern'),
+
 
     (req: Request, res: Response, next: NextFunction) => {
         // Проверка заголовка Authorization
