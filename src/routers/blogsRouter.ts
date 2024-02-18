@@ -14,8 +14,8 @@ blogsRouter.get('/', (req: Request, res: Response)=> {
 blogsRouter.get('/:id', (req:Request, res: Response) => {
     const blogID = req.params.id;
     const blogByID = blogsRepository.findBlogByID(blogID);
-
-    if (!blogID || !blogByID){
+debugger
+    if (!blogID ?? !blogByID){
         res.sendStatus(CodeResponsesEnum.Not_found_404);
         return
     }
