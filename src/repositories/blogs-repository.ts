@@ -6,16 +6,17 @@ export const blogsRepository = {
     findBlogByID(blogID:string) {
         return blogs.find(blog => blog.id === blogID);
     },
-    createBlog(blogID:string, body:{name:string, description:string, websiteUrl:string}) {
-        const newBlog = {
-            id: blogID,
+    createBlog(body:BLogType) {
+        const id = new Date().getTime().toString();
+        const newBlog:BLogType = {
+            id,
             name: body.name,
             description: body.description,
             websiteUrl: body.websiteUrl
         }
         return newBlog
     },
-    updateBlog(blogID:string, body:{name:string, description:string, websiteUrl:string}) {
+    updateBlog(blogID:string, body:BLogType) {
         const blogByID = blogs.find(blog => blog.id === blogID);
         if (blogByID) {
             blogByID.name = body.name ?? blogByID.name;

@@ -5,9 +5,10 @@ export const postsRepository = {
     findPostByID(postID:string) {
         return posts.find(post => post.id === postID);
     },
-    createPost(postID:string, body:PostType):PostType {
+    createPost(body:PostType):PostType {
+        const id = new Date().getTime().toString();
         const newPost:PostType = {
-            id: postID,
+            id,
             title: body.title,
             shortDescription: body.shortDescription,
             content: body.content,

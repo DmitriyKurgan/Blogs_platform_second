@@ -24,7 +24,7 @@ blogsRouter.get('/:id', (req:Request, res: Response) => {
 })
 
 blogsRouter.post('/', validateRequest, (req:Request, res: Response) =>{
-    const newBlog = blogsRepository.createBlog(req.params.id, req.body)
+    const newBlog = blogsRepository.createBlog(req.body)
     blogs.push(newBlog)
     res.status(CodeResponsesEnum.Created_201).send(newBlog)
 });

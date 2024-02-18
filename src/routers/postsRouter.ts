@@ -12,7 +12,7 @@ postsRouter.get('/', (req: Request, res: Response) => {
 });
 
 postsRouter.post('/', validateRequest, (req: Request, res: Response) => {
-    const newPost:PostType= postsRepository.createPost(req.params.id, req.body);
+    const newPost:PostType= postsRepository.createPost(req.body);
     posts.push(newPost);
     res.status(CodeResponsesEnum.Created_201).send(newPost);
 });
