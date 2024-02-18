@@ -45,7 +45,7 @@ blogsRouter.delete('/:id', (req:Request, res:Response) => {
     const blogID = req.params.id;
     const isDeleted = blogsRepository.deleteBlog(blogID);
 
-    if(!isDeleted){
+    if(!isDeleted || !blogID){
         res.sendStatus(CodeResponsesEnum.Not_found_404);
         return;
     }
