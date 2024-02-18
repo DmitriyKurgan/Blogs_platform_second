@@ -34,9 +34,9 @@ postsRouter.delete('/:id', (req:Request, res:Response)=>{
     const postID = req.params.id;
     const isDeleted = postsRepository.deletePost(postID);
 
-    if (isDeleted){
-        return res.sendStatus(CodeResponsesEnum.Not_content_204);
+    if (!postID || !isDeleted){
+        res.sendStatus(404);
+        return;
     }
-
-    return res.sendStatus(404);
+    res.sendStatus(CodeResponsesEnum.Not_content_204);
 });
