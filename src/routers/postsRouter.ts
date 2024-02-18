@@ -30,7 +30,7 @@ postsRouter.put('/:id', validateRequest, (req:Request, res: Response)=>{
     }
 });
 
-postsRouter.delete('/:id', (req:Request, res:Response)=>{
+postsRouter.delete('/:id', validateRequest, (req:Request, res:Response)=>{
     const postID = req.params.id;
     const isDeleted = postsRepository.deletePost(postID);
 
