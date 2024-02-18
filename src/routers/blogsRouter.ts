@@ -15,7 +15,7 @@ blogsRouter.get('/:id', (req:Request, res: Response) => {
     const blogID = req.params.id;
     const blogByID = blogsRepository.findBlogByID(blogID);
 
-    if (!blogByID){
+    if (!blogID || !blogByID){
         res.sendStatus(CodeResponsesEnum.Not_found_404);
     }
 
@@ -44,8 +44,8 @@ blogsRouter.put('/:id', validateRequest, (req:Request, res:Response) => {
 blogsRouter.delete('/:id', (req:Request, res:Response) => {
     const blogID = req.params.id;
     const isDeleted = blogsRepository.deleteBlog(blogID);
-
-    if(!isDeleted ?? !blogID){
+debugger
+    if(!isDeleted || !blogID){
         debugger
         res.sendStatus(CodeResponsesEnum.Not_found_404);
         return;
