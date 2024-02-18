@@ -1,25 +1,27 @@
-import {BLogType} from "../utils/types";
-export const posts = [] as BLogType[]
+import {BLogType, PostType} from "../utils/types";
+export const posts = [] as PostType[]
 export const postsRepository = {
 
     findPostByID(postID:string) {
         return posts.find(post => post.id === postID);
     },
-    createPost(blogID:string, body:{name:string, description:string, websiteUrl:string}) {
-        const newPost = {
-            id: blogID,
-            name: body.name,
-            description: body.description,
-            websiteUrl: body.websiteUrl
+    createPost(postID:string, body:PostType):PostType {
+        const newPost:PostType = {
+            id: postID,
+            title: body.title,
+            shortDescription: body.shortDescription,
+            content: body.content,
+            blogId: body.blogId
         }
         return newPost
     },
-    updatePost(postID:string, body:{name:string, description:string, websiteUrl:string}) {
+    updatePost(postID:string, body:PostType):boolean {
         const postByID = posts.find(post => post.id === postID);
         if (postByID) {
-            postByID.name = body.name ?? postByID.name;
-            postByID.description = body.description ?? postByID.description;
-            postByID.websiteUrl = body.websiteUrl ?? postByID.websiteUrl;
+            postByID.title = body.title ?? postByID.title;
+            postByID.shortDescription = body.shortDescription ?? postByID.shortDescription;
+            postByID.content = body.content ?? postByID.content;
+            postByID.blogId = body.blogId ?? postByID.blogId;
             return true;
         } else {
             return false;

@@ -2,6 +2,7 @@ import {Router, Response, Request} from "express";
 import {validateRequest} from "../middlewares/middlewares";
 import {CodeResponsesEnum} from "../utils/utils";
 import {posts, postsRepository} from "../repositories/posts-repository";
+import {PostType} from "../utils/types";
 
 export const postsRouter = Router({})
 
@@ -11,7 +12,7 @@ postsRouter.get('/', (req: Request, res: Response) => {
 });
 
 postsRouter.post('/', (req: Request, res: Response) => {
-    const newPost= postsRepository.createPost(req.params.id, req.body);
+    const newPost:PostType= postsRepository.createPost(req.params.id, req.body);
     posts.push(newPost);
     res.status(CodeResponsesEnum.Created_201).send(newPost);
 });
