@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import { body, validationResult } from 'express-validator';
 
 export const validateRequest = [
-    // Проверка данных запроса
     body('name').isString().isLength({max:15}).withMessage('Invalid name value'),
     body('description').isString().isLength({max:500}).withMessage('Invalid description value'),
     body('websiteUrl').isString().isLength({max:100})
@@ -11,7 +10,6 @@ export const validateRequest = [
         .withMessage('Invalid websiteUrl pattern'),
 
     (req: Request, res: Response, next: NextFunction) => {
-        debugger
         // Проверка заголовка Authorization
         const authHeader = req.headers.authorization;
         if (!authHeader) {
