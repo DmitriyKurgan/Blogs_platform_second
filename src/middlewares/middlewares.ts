@@ -41,21 +41,27 @@ export const validatePostsRequests = [
     }
 ];
 
-export const validateAuthorization = [
-    (req: Request, res: Response, next: NextFunction) => {
-        const authHeader = req.headers.authorization;
-        if (!authHeader) {
-            return res.status(401).json({message: 'Unauthorized: Missing Authorization header'});
-        }
+export const validateAuthorization = (req: Request, res: Response, next: NextFunction) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+        return res.status(401).json({ message: 'Unauthorized: Missing Authorization header' });
+    }
 
-        const authData = Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
+    const [authType, token] = authHeader.split(' ');
+
+    if (authType.toLowerCase() === 'basic') {
+        const authData = Buffer.from(token, 'base64').toString().split(':');
         const username = authData[0];
         const password = authData[1];
 
         if (username !== 'admin' || password !== 'qwerty') {
-            return res.status(401).json({message: 'Unauthorized: Invalid credentials'});
+            return res.status(401).json({ message: 'Unauthorized: Invalid credentials' });
         }
-
-        next();
+    } else if (authType.toLowerCase() === 'bearer') {
+    } else {
+        return res.status(401).json({ message: 'Unauthorized: Unsupported Authorization type' });
     }
-];
+
+    next();
+};
+
