@@ -26,7 +26,7 @@ export const validateRequest = [
         }
 
         const errors = validationResult(req);
-        if (!errors.isEmpty()) {
+        if (!errors.isEmpty() && authHeader) {
             const errorMessages = errors.array().map((error: any) => ({
                 message: error.msg,
                 field: error.param
