@@ -30,7 +30,7 @@ export const blogsRepository = {
     deleteBlog(blogID:string){
         const blogIndexToDelete = blogs.findIndex(blog => blog.id === blogID);
         if (blogIndexToDelete !== -1){
-            posts.splice(blogIndexToDelete, 1);
+            blogs.splice(blogIndexToDelete, 1);
             return true
         } else {
             return false

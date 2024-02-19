@@ -18,7 +18,6 @@ blogsRouter.get('/:id', (req:Request, res: Response) => {
         res.sendStatus(CodeResponsesEnum.Not_found_404);
         return
     }
-
     res.status(CodeResponsesEnum.OK_200).send(blogByID);
 })
 
