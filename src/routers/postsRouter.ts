@@ -1,5 +1,5 @@
 import {Router, Response, Request} from "express";
-import {validateRequest} from "../middlewares/middlewares";
+import {validateAuthorization, validatePostsRequests} from "../middlewares/middlewares";
 import {CodeResponsesEnum} from "../utils/utils";
 import {posts, postsRepository} from "../repositories/posts-repository";
 import {PostType} from "../utils/types";
@@ -11,13 +11,13 @@ postsRouter.get('/', (req: Request, res: Response) => {
     res.send(posts).status(CodeResponsesEnum.OK_200)
 });
 
-postsRouter.post('/', validateRequest, (req: Request, res: Response) => {
+postsRouter.post('/', validatePostsRequests, (req: Request, res: Response) => {
     const newPost:PostType= postsRepository.createPost(req.body);
     posts.push(newPost);
     res.status(CodeResponsesEnum.Created_201).send(newPost);
 });
 
-postsRouter.put('/:id', validateRequest, (req:Request, res: Response)=>{
+postsRouter.put('/:id', validatePostsRequests, (req:Request, res: Response)=>{
     const postID = req.params.id;
     const isUpdated = postsRepository.updatePost(postID, req.body);
 
@@ -30,7 +30,7 @@ postsRouter.put('/:id', validateRequest, (req:Request, res: Response)=>{
     }
 });
 
-postsRouter.delete('/:id', validateRequest, (req:Request, res:Response)=>{
+postsRouter.delete('/:id', validateAuthorization, (req:Request, res:Response)=>{
     const postID = req.params.id;
     const isDeleted = postsRepository.deletePost(postID);
 
