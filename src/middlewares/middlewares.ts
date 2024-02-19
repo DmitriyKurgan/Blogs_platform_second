@@ -11,7 +11,6 @@ export const validateRequest = [
 
     (req: Request, res: Response, next: NextFunction) => {
         debugger
-        // Проверка заголовка Authorization
         const authHeader = req.headers.authorization;
         if (!authHeader) {
             return res.status(401).json({ message: 'Unauthorized: Missing Authorization header' });

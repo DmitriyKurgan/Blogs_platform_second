@@ -40,7 +40,7 @@ blogsRouter.put('/:id', validateRequest, (req:Request, res:Response) => {
     }
 });
 
-blogsRouter.delete('/:id', validateRequest, (req:Request, res:Response) => {
+blogsRouter.delete('/:id', (req:Request, res:Response) => {
     const blogID = req.params.id;
     const isDeleted = blogsRepository.deleteBlog(blogID);
 debugger
