@@ -41,27 +41,33 @@ export const validatePostsRequests = [
     }
 ];
 
-export const validateAuthorization = (req: Request, res: Response, next: NextFunction) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-        return res.status(401).json({ message: 'Unauthorized: Missing Authorization header' });
-    }
-
-    const [authType, token] = authHeader.split(' ');
-
-    if (authType.toLowerCase() === 'basic') {
-        const authData = Buffer.from(token, 'base64').toString().split(':');
-        const username = authData[0];
-        const password = authData[1];
-
-        if (username !== 'admin' || password !== 'qwerty') {
-            return res.status(401).json({ message: 'Unauthorized: Invalid credentials' });
+export const validateAuthorization = [
+    (req: Request, res: Response, next: NextFunction) => {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            return res.status(401).json({ message: 'Unauthorized: Missing Authorization header' });
         }
-    } else if (authType.toLowerCase() === 'bearer') {
-    } else {
-        return res.status(401).json({ message: 'Unauthorized: Unsupported Authorization type' });
-    }
 
-    next();
-};
+        const [authType, token] = authHeader.split(' ');
+
+        if (authType.toLowerCase() === 'basic') {
+            const authData = Buffer.from(token, 'base64').toString().split(':');
+            const username = authData[0];
+            const password = authData[1];
+
+            if (username !== 'admin' || password !== 'qwerty') {
+                return res.status(401).json({ message: 'Unauthorized: Invalid credentials' });
+            }
+        } else if (authType.toLowerCase() === 'bearer') {
+            // Проверяем, является ли токен правильным
+            if (token !== 'YWRtaW46cXdlcnR5') {
+                return res.status(401).json({ message: 'Unauthorized: Invalid Bearer token' });
+            }
+        } else {
+            return res.status(401).json({ message: 'Unauthorized: Unsupported Authorization type' });
+        }
+
+        next();
+    }
+];
 
