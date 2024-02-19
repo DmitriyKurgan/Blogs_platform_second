@@ -21,13 +21,13 @@ blogsRouter.get('/:id', (req:Request, res: Response) => {
     res.status(CodeResponsesEnum.OK_200).send(blogByID);
 })
 
-blogsRouter.post('/', validateBlogsRequests, (req:Request, res: Response) =>{
+blogsRouter.post('/', validateAuthorization, validateBlogsRequests, (req:Request, res: Response) =>{
     const newBlog = blogsRepository.createBlog(req.body)
     blogs.push(newBlog)
     res.status(CodeResponsesEnum.Created_201).send(newBlog)
 });
 
-blogsRouter.put('/:id', validateBlogsRequests, (req:Request, res:Response) => {
+blogsRouter.put('/:id', validateAuthorization, validateBlogsRequests, (req:Request, res:Response) => {
     const blogID = req.params.id;
     const isUpdated = blogsRepository.updateBlog(blogID, req.body);
 

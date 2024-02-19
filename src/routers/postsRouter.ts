@@ -11,13 +11,13 @@ postsRouter.get('/', (req: Request, res: Response) => {
     res.send(posts).status(CodeResponsesEnum.OK_200)
 });
 
-postsRouter.post('/', validatePostsRequests, (req: Request, res: Response) => {
+postsRouter.post('/', validateAuthorization, validatePostsRequests, (req: Request, res: Response) => {
     const newPost:PostType= postsRepository.createPost(req.body);
     posts.push(newPost);
     res.status(CodeResponsesEnum.Created_201).send(newPost);
 });
 
-postsRouter.put('/:id', validatePostsRequests, (req:Request, res: Response)=>{
+postsRouter.put('/:id', validateAuthorization, validatePostsRequests, (req:Request, res: Response)=>{
     const postID = req.params.id;
     const isUpdated = postsRepository.updatePost(postID, req.body);
 
