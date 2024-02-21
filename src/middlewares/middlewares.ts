@@ -50,18 +50,11 @@ export const validateAuthorization = [
 
         const [authType, token] = authHeader.split(' ');
 
-        // if (authType.toLowerCase() === 'basic') {
-        //     // const authData = Buffer.from(token, 'base64').toString().split(':');
-        //     // const username = authData[0];
-        //     // const password = authData[1];
-        //     //
-        //     // if (username !== 'admin' || password !== 'qwerty') {
-        //     //     return res.status(401).json({ message: 'Unauthorized: Invalid credentials' });
-        //     // }
-        //     if (token !== 'YWRtaW46cXdlcnR5') {
-        //         return res.status(401).json({ message: 'Unauthorized: Invalid Bearer token' });
-        //     }
-        // }
+        if (authType.toLowerCase() === 'basic') {
+            if (token !== 'YWRtaW46cXdlcnR5') {
+                return res.status(401).json({ message: 'Unauthorized: Invalid Bearer token' });
+            }
+        }
 
         if (authType.toLowerCase() === 'bearer') {
             if (token !== 'YWRtaW46cXdlcnR5') {
