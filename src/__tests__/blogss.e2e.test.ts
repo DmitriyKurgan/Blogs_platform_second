@@ -2,12 +2,6 @@ import request from 'supertest';
 import {app} from "../app_settings";
 import {BLogType} from "../utils/types";
 import {CodeResponsesEnum} from "../utils/utils";
-// id:'1',
-//     title: 'New Video By Dima',
-//     shortDescription: 'Description',
-//     content: 'content',
-//     blogId: 'blogID',
-//     blogName: 'NewBlog',
 
 
 const dbName = 'back'

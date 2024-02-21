@@ -8,7 +8,7 @@ export const validateBlogsRequests = [
         .withMessage('Invalid websiteUrl value')
         .matches(/^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/)
         .withMessage('Invalid websiteUrl pattern'),
-
+//TODO check
     (req: Request, res: Response, next: NextFunction) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -50,25 +50,25 @@ export const validateAuthorization = [
 
         const [authType, token] = authHeader.split(' ');
 
-        if (authType.toLowerCase() === 'basic') {
-            // const authData = Buffer.from(token, 'base64').toString().split(':');
-            // const username = authData[0];
-            // const password = authData[1];
-            //
-            // if (username !== 'admin' || password !== 'qwerty') {
-            //     return res.status(401).json({ message: 'Unauthorized: Invalid credentials' });
-            // }
-            if (token !== 'YWRtaW46cXdlcnR5') {
-                return res.status(401).json({ message: 'Unauthorized: Invalid Bearer token' });
-            }
-        }
+        // if (authType.toLowerCase() === 'basic') {
+        //     // const authData = Buffer.from(token, 'base64').toString().split(':');
+        //     // const username = authData[0];
+        //     // const password = authData[1];
+        //     //
+        //     // if (username !== 'admin' || password !== 'qwerty') {
+        //     //     return res.status(401).json({ message: 'Unauthorized: Invalid credentials' });
+        //     // }
+        //     if (token !== 'YWRtaW46cXdlcnR5') {
+        //         return res.status(401).json({ message: 'Unauthorized: Invalid Bearer token' });
+        //     }
+        // }
 
         if (authType.toLowerCase() === 'bearer') {
             if (token !== 'YWRtaW46cXdlcnR5') {
                 return res.status(401).json({ message: 'Unauthorized: Invalid Bearer token' });
             }
         }
-
+      //ssh -R 80:localhost:5000 serveo.net
         next();
     }
 ];
