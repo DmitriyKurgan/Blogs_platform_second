@@ -50,17 +50,18 @@ export const validateAuthorization = [
 
         const [authType, token] = authHeader.split(' ');
 
+        if (authType.toLowerCase() === 'bearer') {
+            if (token !== 'YWRtaW46cXdlcnR5') {
+                return res.status(401).json({ message: 'Unauthorized: Invalid Bearer token' });
+            }
+        }
+
         if (authType.toLowerCase() === 'basic') {
             if (token !== 'YWRtaW46cXdlcnR5') {
                 return res.status(401).json({ message: 'Unauthorized: Invalid Bearer token' });
             }
         }
 
-        if (authType.toLowerCase() === 'bearer') {
-            if (token !== 'YWRtaW46cXdlcnR5') {
-                return res.status(401).json({ message: 'Unauthorized: Invalid Bearer token' });
-            }
-        }
       //ssh -R 80:localhost:5000 serveo.net
         next();
     }
