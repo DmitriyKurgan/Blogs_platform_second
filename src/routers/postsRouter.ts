@@ -2,7 +2,7 @@ import {Router, Response, Request} from "express";
 import {validateAuthorization, validatePostsRequests} from "../middlewares/middlewares";
 import {CodeResponsesEnum} from "../utils/utils";
 import {posts, postsRepository} from "../repositories/posts-repository";
-import {PostType} from "../utils/types";
+import {BLogType, PostType} from "../utils/types";
 import {blogs} from "../repositories/blogs-repository";
 
 export const postsRouter = Router({})
@@ -13,11 +13,11 @@ postsRouter.get('/', (req: Request, res: Response) => {
 });
 
 postsRouter.post('/', validateAuthorization, validatePostsRequests, (req: Request, res: Response) => {
-    const blog = blogs.find(b=>b.id === req.body.blogId)
+    const blog:BLogType | any = blogs.find(b=>b.id === req.body.blogId)
     if (!blog){
         res.sendStatus(CodeResponsesEnum.Not_found_404)
     }
-    const newPost:PostType= postsRepository.createPost(req.body);
+    const newPost:PostType= postsRepository.createPost(req.body, blog.name);
     posts.push(newPost);
     res.status(CodeResponsesEnum.Created_201).send(newPost);
 });
