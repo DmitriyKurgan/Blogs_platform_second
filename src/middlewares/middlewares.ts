@@ -51,7 +51,8 @@ export const validateAuthorization = [
         const [authType, token] = authHeader.split(' ');
 
         if (token !== 'YWRtaW46cXdlcnR5') {
-            res.status(401).json({ message: 'Unauthorized: Invalid Bearer token' });
+            console.log('Token: ', token)
+            res.sendStatus(401)
         }
 
         // if (authType.toLowerCase() === 'bearer') {
