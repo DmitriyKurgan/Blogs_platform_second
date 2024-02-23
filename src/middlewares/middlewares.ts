@@ -17,25 +17,34 @@ export const validatePostsRequests = [
     body('blogId').isString().withMessage('Invalid blogId value'),
 ];
 
-export const validateAuthorization = [
-    (req: Request, res: Response, next: NextFunction) => {
-        const authHeader = req.headers.authorization;
-        if (!authHeader) {
-            return res.sendStatus(401);
-        }
+// export const validateAuthorization = [
+//     (req: Request, res: Response, next: NextFunction) => {
+//         const authHeader = req.headers.authorization;
+//         if (!authHeader) {
+//             return res.sendStatus(401);
+//         }
+//
+//         const token = authHeader.split(' ')[1]; // Extract token from header
+//
+//         const decodedToken = Buffer.from(token, 'base64').toString('utf-8'); // Decode token from base64
+//
+//         if (decodedToken !== 'admin:qwerty') { // Check decoded token
+//             console.log('Token: ', decodedToken);
+//             return res.sendStatus(401);
+//         }
+//
+//         next();
+//     }
+// ];
 
-        const token = authHeader.split(' ')[1]; // Extract token from header
 
-        const decodedToken = Buffer.from(token, 'base64').toString('utf-8'); // Decode token from base64
-
-        if (decodedToken !== 'admin:qwerty') { // Check decoded token
-            console.log('Token: ', decodedToken);
-            return res.sendStatus(401);
-        }
-
+export const validateAuthorization = (req: Request, res: Response, next: NextFunction) => {
+    if (req.headers.authorization !== "Basic YWRtaW46cXdlcnR5") {
+        res.sendStatus(401);
+    } else {
         next();
     }
-];
+};
 
 export const validateErrorsMiddleware = (
     req: Request,
