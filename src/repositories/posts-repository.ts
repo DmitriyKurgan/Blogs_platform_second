@@ -26,7 +26,6 @@ export const postsRepository = {
             postByID.shortDescription = body.shortDescription ?? postByID.shortDescription;
             postByID.content = body.content ?? postByID.content;
             postByID.blogId = body.blogId ?? postByID.blogId;
-            postByID.blogName = body.blogName ?? postByID.blogName;
             return true;
         } else {
             return false;
