@@ -1,4 +1,4 @@
-import {BLogType, PostType} from "../utils/types";
+import { PostType} from "../utils/types";
 export const posts = [] as PostType[]
 export const postsRepository = {
 
@@ -13,7 +13,6 @@ export const postsRepository = {
             shortDescription: body.shortDescription,
             content: body.content,
             blogId: body.blogId,
-            blogName: body.blogName
         }
         return newPost
     },
@@ -24,7 +23,6 @@ export const postsRepository = {
             postByID.shortDescription = body.shortDescription ?? postByID.shortDescription;
             postByID.content = body.content ?? postByID.content;
             postByID.blogId = body.blogId ?? postByID.blogId;
-            postByID.blogName = body.blogName ?? postByID.blogName;
             return true;
         } else {
             return false;

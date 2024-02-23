@@ -11,5 +11,4 @@ export type PostType = {
     shortDescription: string
     content: string
     blogId: string
-    blogName:string
 }
