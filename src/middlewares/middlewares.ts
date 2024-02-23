@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
-import { body, validationResult } from 'express-validator';
+import {body, ValidationError, validationResult} from 'express-validator';
 
 export const validateBlogsRequests = [
-    body('name').isString().isLength({max:15}).withMessage('Invalid name value'),
-    body('description').isString().isLength({max:500}).withMessage('Invalid description value'),
+    body('name').isString().isLength({max:15}).withMessage('name is too long'),
+    body('description').isString().isLength({max:500}).withMessage('description is too long'),
     body('websiteUrl').isString().isLength({max:100})
-        .withMessage('Invalid websiteUrl value')
+        .withMessage('website url is too long')
         .matches(/^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/)
-        .withMessage('Invalid websiteUrl pattern'),
+        .withMessage('website url does not match the template'),
 ];
 
 export const validatePostsRequests = [
@@ -37,37 +37,33 @@ export const validateAuthorization = [
     }
 ];
 
-// export const validateErrorsMiddleware = (req: Request, res: Response, next: NextFunction) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//         const uniqueErrors: { [field: string]: string } = {};
-//         errors.array().forEach(error => {
-//             if (!uniqueErrors[error.param]) {
-//                 uniqueErrors[error.param] = error.msg;
-//             }
-//         });
-//
-//         const errorMessages = Object.keys(uniqueErrors).map(field => ({
-//             message: uniqueErrors[field],
-//             field
-//         }));
-//
-//         return res.status(400).json({ errorsMessages: errorMessages });
-//     }
-//     next();
-// };
+export const validateErrorsMiddleware = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    const errorFormatter = ({ msg, param }: ValidationError) => {
+        return {
+            message: msg,
+            field: param,
+        };
+    };
 
-export const validateErrorsMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    const error = validationResult(req)
-    if (!error.isEmpty()) {
-        return res.status(400).send({
-            errorsMessages: error.array({onlyFirstError: true}).map((e:any) => {
-                return {
-                    message: e.msg,
-                    field: e.param
-                }
-            })
-        })
+    const result = validationResult(req).formatWith(errorFormatter);
+
+    const idFinder = result.array().find((e) => e.field === "id");
+    const deviceIdFinder = result.array().find((e) => e.field === "deviceId");
+
+    if (idFinder || deviceIdFinder) {
+        res.status(404).json({ errorsMessages: result.array() });
+        return;
     }
-    next()
-}
+
+    if (!result.isEmpty()) {
+        res
+            .status(400)
+            .json({ errorsMessages: result.array({ onlyFirstError: true }) });
+    } else {
+        next();
+    }
+};
