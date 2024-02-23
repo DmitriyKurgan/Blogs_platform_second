@@ -45,30 +45,20 @@ export const validateAuthorization = [
     (req: Request, res: Response, next: NextFunction) => {
         const authHeader = req.headers.authorization;
         if (!authHeader) {
-            return res.status(401).json({ message: 'Unauthorized: Missing Authorization header' });
+            return res.sendStatus(401);
         }
 
-        const [authType, token] = authHeader.split(' ');
+        const token = authHeader.split(' ')[1]; // Извлекаем сам токен из заголовка
 
-        if (token !== 'YWRtaW46cXdlcnR5') {
-            console.log('Token: ', token)
-            res.sendStatus(401)
+        const decodedToken = Buffer.from(token, 'base64').toString('utf-8'); // Декодируем токен из base64
+
+        if (decodedToken !== 'admin:qwerty') { // Проверяем декодированный токен
+            console.log('Token: ', decodedToken);
+            return res.sendStatus(401);
         }
 
-        // if (authType.toLowerCase() === 'bearer') {
-        //     if (token !== 'YWRtaW46cXdlcnR5') {
-        //         return res.status(401).json({ message: 'Unauthorized: Invalid Bearer token' });
-        //     }
-        // }
-        //
-        // if (authType.toLowerCase() === 'basic') {
-        //     if (token !== 'YWRtaW46cXdlcnR5') {
-        //         return res.status(401).json({ message: 'Unauthorized: Invalid Bearer token' });
-        //     }
-        // }
-
-      //ssh -R 80:localhost:5000 serveo.net
         next();
     }
 ];
+
 
