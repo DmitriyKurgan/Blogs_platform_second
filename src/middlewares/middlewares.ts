@@ -89,8 +89,13 @@ export const validatePostsRequests = [
     body("blogId")
         .exists()
         .withMessage("Blog ID is required")
-        .isString()
-        .withMessage("Type of Blog ID must be string"),
+        .custom(value => {
+            if (typeof value === 'number') {
+                value = value.toString();
+            }
+            return typeof value === 'string';
+        })
+        .withMessage("Blog ID must be a string"),
 ];
 
 export const validateAuthorization = (req: Request, res: Response, next: NextFunction) => {
