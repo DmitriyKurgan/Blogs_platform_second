@@ -86,7 +86,7 @@ export const validatePostsRequests = [
         .withMessage(
             "Short description length must be more than 0 and less than or equal to 1000 symbols"
         ),
-    body("content")
+    body("blogId")
         .exists()
         .withMessage("Blog ID is required")
         .isString()
