@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import {body, ValidationError, validationResult} from 'express-validator';
-import {blogs} from "../repositories/blogs-repository";
+import {blogs, blogsRepository} from "../repositories/blogs-repository";
 const websiteUrlPattern =
     /^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/;
 export const validateBlogsRequests = [
@@ -130,11 +130,11 @@ export const validateErrorsMiddleware = (
     const result = validationResult(req).formatWith(errorFormatter);
 
     const idFinder = result.array().find((e) => e.field === "id");
-   // const idBlogIdFinder = result.array().find((e) => e.field === "blogId");
-    const isBlogExist = blogs.find(b =>b.id === req.body.blogId)
+   // debugger
+   //  const isBlogExist = blogs.find(b =>b.id === req.body.blogId)
     const deviceIdFinder = result.array().find((e) => e.field === "deviceId");
 
-    if (idFinder || deviceIdFinder || !isBlogExist) {
+    if (idFinder || deviceIdFinder) {
         res.status(404).json({ errorsMessages: result.array() });
         return;
     }
@@ -147,3 +147,11 @@ export const validateErrorsMiddleware = (
         next();
     }
 };
+
+export const validationPostsCreation = body("blogId").custom(async (value) => {
+    const result = await blogsRepository.findBlogByID(value);
+    if (!result) {
+        throw new Error("Blog with provided ID not found");
+    }
+    return true;
+});
