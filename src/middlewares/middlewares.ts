@@ -93,9 +93,9 @@ export const validatePostsRequests = [
             if (typeof value === 'number') {
                 value = value.toString();
             }
-            return typeof value === 'string';
+            return typeof value === 'string' || typeof value === 'number';
         })
-        .withMessage("Blog ID must be a string"),
+        .withMessage("Blog ID must be a string or a number"),
 ];
 
 export const validateAuthorization = (req: Request, res: Response, next: NextFunction) => {
