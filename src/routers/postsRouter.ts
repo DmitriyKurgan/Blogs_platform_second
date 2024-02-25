@@ -1,5 +1,5 @@
 import {Router, Response, Request} from "express";
-import {validateAuthorization, validatePostsRequests} from "../middlewares/middlewares";
+import {validateAuthorization, validateErrorsMiddleware, validatePostsRequests} from "../middlewares/middlewares";
 import {CodeResponsesEnum} from "../utils/utils";
 import {posts, postsRepository} from "../repositories/posts-repository";
 import {PostType} from "../utils/types";
@@ -22,7 +22,7 @@ postsRouter.get('/:id', (req:Request, res: Response) => {
     res.status(CodeResponsesEnum.OK_200).send(postByID);
 })
 
-postsRouter.post('/', validateAuthorization, validatePostsRequests, (req: Request, res: Response) => {
+postsRouter.post('/', validateAuthorization, validatePostsRequests, validateErrorsMiddleware, (req: Request, res: Response) => {
     const blog = blogs.find(b=>b.id === req.body.blogId)
     if (!blog){
         return res.sendStatus(CodeResponsesEnum.Not_found_404);
@@ -32,7 +32,7 @@ postsRouter.post('/', validateAuthorization, validatePostsRequests, (req: Reques
     res.status(CodeResponsesEnum.Created_201).send(newPost);
 });
 
-postsRouter.put('/:id', validateAuthorization, validatePostsRequests, (req:Request, res: Response)=>{
+postsRouter.put('/:id', validateAuthorization, validatePostsRequests,validateErrorsMiddleware, (req:Request, res: Response)=>{
     const postID = req.params.id;
     const isUpdated = postsRepository.updatePost(postID, req.body);
 
