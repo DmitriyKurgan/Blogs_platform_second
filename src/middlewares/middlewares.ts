@@ -91,10 +91,12 @@ export const validatePostsRequests = [
         .withMessage("Blog ID is required")
         .isString()
         .withMessage("Type of Blog ID must be string")
-        .trim()
-        .isLength({
-            min: 1,
-        }),
+        .custom(value => {
+            if(!isNaN(Number(value))){
+                return typeof value === 'number'
+            }
+        })
+        .withMessage("Blog ID must be a string"),
 ];
 
 export const validateAuthorization = (req: Request, res: Response, next: NextFunction) => {
