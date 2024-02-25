@@ -73,6 +73,19 @@ export const validatePostsRequests = [
         .withMessage(
             "Short description length must be more than 0 and less than or equal to 100 symbols"
         ),
+    body("shortDescription")
+        .exists()
+        .withMessage("Short description is required")
+        .isString()
+        .withMessage("Type of short description must be string")
+        .trim()
+        .isLength({
+            min: 1,
+            max: 100,
+        })
+        .withMessage(
+            "Short description length must be more than 0 and less than or equal to 100 symbols"
+        ),
     body("content")
         .exists()
         .withMessage("Content is required")
@@ -90,13 +103,7 @@ export const validatePostsRequests = [
         .exists()
         .withMessage("Blog ID is required")
         .isString()
-        .withMessage("Type of Blog ID must be string")
-        .custom(value => {
-            if(!isNaN(Number(value))){
-                return typeof value === 'number'
-            }
-        })
-        .withMessage("Blog ID must be a string"),
+        .withMessage("Type of Blog ID must be string"),
 ];
 
 export const validateAuthorization = (req: Request, res: Response, next: NextFunction) => {
@@ -122,9 +129,10 @@ export const validateErrorsMiddleware = (
     const result = validationResult(req).formatWith(errorFormatter);
 
     const idFinder = result.array().find((e) => e.field === "id");
+    const iblogIdFinder = result.array().find((e) => e.field === "blogID");
     const deviceIdFinder = result.array().find((e) => e.field === "deviceId");
 
-    if (idFinder || deviceIdFinder) {
+    if (idFinder || deviceIdFinder || iblogIdFinder) {
         res.status(404).json({ errorsMessages: result.array() });
         return;
     }
