@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import {body, ValidationError, validationResult} from 'express-validator';
+import {blogs} from "../repositories/blogs-repository";
 const websiteUrlPattern =
     /^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/;
 export const validateBlogsRequests = [
@@ -129,10 +130,11 @@ export const validateErrorsMiddleware = (
     const result = validationResult(req).formatWith(errorFormatter);
 
     const idFinder = result.array().find((e) => e.field === "id");
-    const iblogIdFinder = result.array().find((e) => e.field === "blogID");
+    const idBlogIdFinder = result.array().find((e) => e.field === "blogID");
+    const isBlogExist = blogs.find(b =>b.id === req.body.blogId)
     const deviceIdFinder = result.array().find((e) => e.field === "deviceId");
 
-    if (idFinder || deviceIdFinder || iblogIdFinder) {
+    if (idFinder || deviceIdFinder || idBlogIdFinder || isBlogExist) {
         res.status(404).json({ errorsMessages: result.array() });
         return;
     }
