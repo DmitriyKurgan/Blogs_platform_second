@@ -89,14 +89,8 @@ export const validatePostsRequests = [
     body("blogId")
         .exists()
         .withMessage("Blog ID is required")
-        .custom(value => typeof value === 'string')
-        .withMessage("Blog ID must be a string")
-        .custom(value => {
-            if (!isNaN(value)) {
-                throw new Error("Blog ID must be a string");
-            }
-            return true;
-        })
+        .isString()
+        .withMessage("Type of Blog ID must be string"),
 ];
 
 export const validateAuthorization = (req: Request, res: Response, next: NextFunction) => {
