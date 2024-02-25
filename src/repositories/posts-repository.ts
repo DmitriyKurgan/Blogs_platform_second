@@ -1,6 +1,4 @@
-import {BLogType, PostType} from "../utils/types";
-import {blogs} from "./blogs-repository";
-import {CodeResponsesEnum} from "../utils/utils";
+import {PostType} from "../utils/types";
 export const posts = [] as PostType[]
 export const postsRepository = {
 
