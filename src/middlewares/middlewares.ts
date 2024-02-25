@@ -90,7 +90,9 @@ export const validatePostsRequests = [
         .exists()
         .withMessage("Blog ID is required")
         .isString()
-        .withMessage("Type of Blog ID must be string"),
+        .withMessage("Type of Blog ID must be string")
+        .notEmpty()
+        .withMessage("Blog ID must not be empty"),
 ];
 
 export const validateAuthorization = (req: Request, res: Response, next: NextFunction) => {
