@@ -1,6 +1,5 @@
 import {Request, Response, Router} from "express";
 import {validateAuthorization, validateBlogsRequests, validateErrorsMiddleware} from "../middlewares/middlewares";
-import {BLogType} from "../utils/types";
 import {CodeResponsesEnum} from "../utils/utils";
 import {blogs, blogsRepository} from "../repositories/blogs-repository";
 
