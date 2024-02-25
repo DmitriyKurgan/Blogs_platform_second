@@ -27,7 +27,7 @@ postsRouter.get('/:id', (req:Request, res: Response) => {
     res.status(CodeResponsesEnum.OK_200).send(postByID);
 })
 
-postsRouter.post('/', validateAuthorization, validatePostsRequests, validateErrorsMiddleware, validationPostsCreation, (req: Request, res: Response) => {
+postsRouter.post('/', validateAuthorization, validatePostsRequests,validationPostsCreation, validateErrorsMiddleware, (req: Request, res: Response) => {
     const blog = blogs.find(b=>b.id === req.body.blogId)
     if (!blog){
         return res.sendStatus(CodeResponsesEnum.Not_found_404);
@@ -37,7 +37,7 @@ postsRouter.post('/', validateAuthorization, validatePostsRequests, validateErro
     res.status(CodeResponsesEnum.Created_201).send(newPost);
 });
 
-postsRouter.put('/:id', validateAuthorization, validatePostsRequests,validateErrorsMiddleware,validationPostsCreation, (req:Request, res: Response)=>{
+postsRouter.put('/:id', validateAuthorization, validatePostsRequests,validationPostsCreation,validateErrorsMiddleware, (req:Request, res: Response)=>{
     const postID = req.params.id;
     const isUpdated = postsRepository.updatePost(postID, req.body);
 
