@@ -130,11 +130,11 @@ export const validateErrorsMiddleware = (
     const result = validationResult(req).formatWith(errorFormatter);
 
     const idFinder = result.array().find((e) => e.field === "id");
-    const idBlogIdFinder = result.array().find((e) => e.field === "blogID");
+   // const idBlogIdFinder = result.array().find((e) => e.field === "blogId");
     const isBlogExist = blogs.find(b =>b.id === req.body.blogId)
     const deviceIdFinder = result.array().find((e) => e.field === "deviceId");
 
-    if (idFinder || deviceIdFinder || idBlogIdFinder || isBlogExist) {
+    if (idFinder || deviceIdFinder || !isBlogExist) {
         res.status(404).json({ errorsMessages: result.array() });
         return;
     }
